@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Preloader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #001219, #003845, #005f73);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Preloader Container */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        /* Night Sky Elements */
+        .sky {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .moon {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #f5f3ce;
+            border-radius: 50%;
+            top: 15%;
+            right: 15%;
+            box-shadow: 0 0 30px #f5f3ce88;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Road Animation */
+        .road-container {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .road {
+            width: 100%;
+            height: 8px;
+            background: #00ffc8;
+            position: absolute;
+            bottom: 50px;
+            box-shadow: 0 0 15px #00ffc8, 
+                        0 0 30px #00ffc888;
+            animation: road-glow 2s infinite alternate;
+        }
+
+        .road-line {
+            position: absolute;
+            width: 200%;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 40px,
+                #001219 40px,
+                #001219 80px
+            );
+            bottom: 53px;
+            /* animation: road-move 1s linear infinite; */ /* Removed to keep road static */
+        }
+        
+        .car {
+            width: 110px;
+            height: 55px;
+            background: black;
+            border-radius: 30px 30px 10px 10px;
+            position: absolute;
+            bottom: 58px;
+            left: 0;
+            transform: translateX(-100px);
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            overflow: visible; /* 🔥 THIS IS THE KEY FIX */
+        }
+        
+        
+        
+        /* Cute Glass Roof */
+        .car-top {
+            width: 65px;
+            height: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+            position: absolute;
+            top: 10px;
+            left: 22px;
+            border-radius: 10px;
+        }
+        
+       
+      
+
+        /* Wheels */
+        .wheel {
+            width: 18px;
+            height: 18px;
+            background: #222;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -5px;
+            border: 3px solid #888;
+            animation: wheel-spin 1s linear infinite;
+        }
+        
+        .wheel::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ccc;
+            border-radius: 50%;
+            position: absolute;
+            top: 4px;
+            left: 4px;
+        }
+        
+        .wheel.front { left: 12px; }
+        .wheel.back { right: 12px; }
+        
+
+        /* Loading Text */
+        .loading-text {
+            color: #bce3ea;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px #00bcd4;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 80%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #00bcd4, #00ffc8);
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes road-move {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        @keyframes road-glow {
+            from { box-shadow: 0 0 15px #00ffc8, 0 0 30px #00ffc888; }
+            to { box-shadow: 0 0 25px #00ffc8, 0 0 50px #00ffc8; }
+        }
+
+        @keyframes wheel-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hide when loaded */
+        .loaded .preloader {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>             
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="sky" id="sky">
+            <div class="moon"></div>
+            <!-- Stars will be added by JavaScript -->
+        </div>
+        
+        <div class="loading-text">Preparing your journey...</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <div class="road-container">
+            <div class="car">
+                <div class="car-top"></div>
+                <div class="luggage luggage1"></div>
+                <div class="luggage luggage2"></div>
+                <div class="luggage luggage3"></div>
+                <div class="wheel front"></div>
+                <div class="wheel back"></div>
+            </div>
+            
+            <div class="road"></div>
+            <div class="road-line"></div>
+        </div>
+    </div>
+
+    <!-- Your Content -->
+    <div class="content" style="display: none;">
+        <!-- Your existing content will appear here -->
+    </div>
+
+    <script>
+        // Create stars
+        const sky = document.getElementById('sky');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = `${Math.random() * 3 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 70}%`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            sky.appendChild(star);
+        }
+
+        // Animate car and progress bar
+        window.addEventListener('load', function() {
+            const car = document.querySelector('.car');
+            const progressBar = document.getElementById('progress');
+            const preloader = document.querySelector('.preloader');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                car.style.transform = `translateX(calc(${progress}vw - 100px))`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.classList.add('loaded');
+                        document.querySelector('.content').style.display = 'block';
+                    }, 500);
+                }
+            }, 30); // Adjust speed here (lower = faster)
+        });
+    </script>
+</body>
+</html>

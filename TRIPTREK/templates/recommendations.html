@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripTrek - Your Personalized Trip to {{ destination }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --info: #560bad;
+            --text: #2d3748;
+            --text-light: #718096;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f5f7fa;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px 0;
+        }
+        
+        .header-text h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .header-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .trip-info {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(5px);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            min-width: 300px;
+            z-index: 2;
+        }
+        
+        .trip-info-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        
+        .trip-info-item i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            font-weight: 600;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .ai-plan-content {
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .ai-plan-content h2, 
+        .ai-plan-content h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .ai-plan-content ul {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .ai-plan-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .ai-plan-content a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .ai-plan-content a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+        
+        .budget-allocation {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.2rem;
+            margin: 0.5rem 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .budget-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        .category-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .amount {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .budget-visualization-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+    
+        .budget-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+    
+        .budget-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+    
+        .budget-subheader {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+    
+        .budget-charts {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+    
+        .chart-container {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+    
+        .chart-container h4 {
+            margin-bottom: 1.2rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+    
+        .budget-breakdown {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+    
+        .budget-breakdown h4 {
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+    
+        
+        /* Add this to your CSS */
+        .budget-breakdown-item {
+            display: grid;
+            grid-template-columns: 25px 2fr 1fr 1fr 1fr 1fr;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .budget-breakdown-item > div {
+            min-width: 0; /* Prevent overflow */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    
+        .budget-breakdown-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+    
+        .category-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+    
+        .category-name {
+            font-weight: 500;
+            padding-right: 8px;
+        }
+    
+        .category-amount, 
+        .category-daily, 
+        .category-per-person {
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary);
+        }
+            
+        .category-percentage {
+            text-align: center;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+                
+        .daily-budget {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .daily-budget h4 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        
+        .daily-budget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.2rem;
+        }
+        
+        .daily-budget-item {
+            background: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .daily-budget-item:hover {
+            background: #e9ecef;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+        
+        .day-header {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .day-amount {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .places-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .place-item {
+            padding: 1.2rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid var(--accent);
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .place-item:hover {
+            background: #e9ecef;
+            border-left: 4px solid var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .travel-recommendations {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .travel-recommendations h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .meta-info {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .primary-recommendation {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--success);
+        }
+        
+        .primary-recommendation h4 {
+            color: var(--success);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .travel-link {
+            padding: 8px 12px;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        
+        .travel-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .travel-link.primary {
+            background: var(--success);
+        }
+        
+        .travel-link.primary:hover {
+            background: #3aa8d4;
+        }
+        
+        .option-type {
+            margin-bottom: 1.5rem;
+        }
+        
+        .option-type h4 {
+            color: var(--text);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .processing-info {
+            text-align: center;
+            color: var(--text-light);
+            margin: 3rem 0 2rem;
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-text {
+                margin-bottom: 1.5rem;
+            }
+            
+            .trip-info {
+                width: 100%;
+                margin-top: 1.5rem;
+                grid-template-columns: 1fr;
+            }
+            
+            .budget-charts {
+                flex-direction: column;
+            }
+            
+            .budget-breakdown-item {
+                grid-template-columns: 25px 1fr 1fr;
+            }
+            
+            .category-percentage {
+                grid-column: 2 / 4;
+                text-align: left;
+                margin-top: 0.5rem;
+            }
+            
+            .daily-budget-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Enhanced Itinerary Styling */
+.itinerary-day {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--accent);
+}
+
+.itinerary-day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.itinerary-day-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.itinerary-day-total {
+    background: var(--primary);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.itinerary-section {
+    margin-bottom: 1rem;
+}
+
+.itinerary-section-title {
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.itinerary-item {
+    display: flex;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.itinerary-item:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.itinerary-item-cost {
+    margin-left: auto;
+    font-weight: 500;
+    color: var(--primary);
+}
+
+.itinerary-total {
+    background: rgba(67, 97, 238, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.itinerary-total span {
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+      
+      .budget-warning {
+          background-color: #fff3cd;
+          border-left: 4px solid #ffc107;
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 4px;
+      }
+      
+      .error-message {
+          background-color: #f8d7da;
+          border-left: 4px solid #dc3545;
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 4px;
+      }
+
+      .budget-visualization-container {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    
+    .budget-breakdown-item {
+        display: grid;
+        grid-template-columns: 20px 2fr 1fr 1fr;
+        gap: 15px;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .category-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+    }
+    /* Enhanced Place Cards */
+.place-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--accent);
+}
+
+.place-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.place-header {
+    margin-bottom: 0.8rem;
+}
+
+.place-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.place-link:hover {
+    text-decoration: underline;
+}
+
+.place-body {
+    font-size: 0.95rem;
+}
+
+.place-address {
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.place-phone {
+    color: var(--text);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.place-phone i {
+    color: var(--success);
+}
+
+.place-links {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.place-website, .booking-link {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.place-website:hover, .booking-link:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Hotel specific styling */
+.hotel-card {
+    border-left: 4px solid var(--info);
+}
+
+/* Restaurant specific styling */
+.restaurant-card {
+    border-left: 4px solid var(--warning);
+}
+
+/* Activity specific styling */
+.activity-card {
+    border-left: 4px solid var(--success);
+}
+/* Shopping specific styling */
+.shopping-card {
+    border-left: 4px solid #f72585;
+}
+/* Add this to your CSS file */
+.links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.travel-link {
+    padding: 8px 12px;
+    background-color: #4361ee;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.travel-link:hover {
+    background-color: #3a56d4;
+}
+
+.travel-link.primary {
+    background-color: #f72585;
+}
+
+.travel-link.booking {
+    background-color: #4895ef;
+}
+
+.travel-link.info {
+    background-color: #4cc9f0;
+}
+
+/* Enhanced Recommendation Cards */
+.recommendation-card {
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: hidden; /* Prevent content from overflowing */
+}
+        
+        .recommendation-card h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .recommendation-description {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .budget-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .budget-detail-item {
+            background: #f8f9fa;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .budget-detail-item strong {
+            color: var(--primary);
+        }
+        
+        /* Enhanced Places Grid */
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        /* Improved Budget Visualization */
+        .budget-visualization {
+            margin: 2rem 0;
+        }
+        
+        .budget-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .budget-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .budget-subheader {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        
+        .budget-charts {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .budget-breakdown {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .breakdown-header {
+            display: grid;
+            grid-template-columns: 25px 2fr 1fr 1fr 1fr;
+            gap: 1.2rem;
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .breakdown-header {
+                grid-template-columns: 25px 1fr 1fr;
+            }
+            
+            .budget-breakdown-item {
+                grid-template-columns: 25px 1fr 1fr;
+            }
+            
+            .category-per-person, .category-daily {
+                display: none;
+            }
+            
+            .breakdown-header span:nth-child(4),
+            .breakdown-header span:nth-child(5) {
+                display: none;
+            }
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--light);
+            color: var(--primary);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .plan-another-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--warning);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .plan-another-button:hover {
+            background: #d61c70;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Your Perfect Trip to {{ destination }}</h1>
+                    <p>Expertly crafted itinerary based on your preferences</p>
+                </div>
+                <div class="trip-info">
+                    <div class="trip-info-item">
+                        <i class="fas fa-map-marker-alt"></i> <span>{{ source }} → {{ destination }}</span>
+                    </div>
+                    <div class="trip-info-item">
+                        <i class="fas fa-wallet"></i> <span>Budget: ₹{{ formatted_budget }}</span>
+                    </div>
+                    <div class="trip-info-item">
+                        <i class="fas fa-users"></i> <span>{{ people }} traveler{% if people > 1 %}s{% endif %}</span>
+                    </div>
+                    <div class="trip-info-item">
+                        <i class="fas fa-calendar-alt"></i> <span>{{ days }} day{% if days > 1 %}s{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- AI Travel Plan Section -->
+        <section class="card">
+            <h2 class="section-title">
+                <i class="fas fa-route" style="margin-right: 10px;"></i>
+                Your Personalized Travel Itinerary
+            </h2>
+            <div class="ai-plan-content">
+                {% if ai_plan.startswith('<div class=') %}
+                    {{ ai_plan|safe }}
+                {% else %}
+                    <div class="itinerary-container">
+                        {{ ai_plan|replace('\n', '<br>')|safe }}
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Budget Visualization Section -->
+        <section class="card">
+            <h2 class="section-title">
+                <i class="fas fa-chart-pie" style="margin-right: 10px;"></i>
+                Budget Breakdown & Visualization
+            </h2>
+            <div class="budget-visualization">
+                {{ budget_visual_html|safe }}
+            </div>
+        </section>
+
+        <!-- Travel Options Section -->
+        <section class="card">
+            <h2 class="section-title">
+                <i class="fas fa-plane" style="margin-right: 10px;"></i>
+                Recommended Travel Options
+            </h2>
+            <div class="travel-options">
+                {{ travel_suggestion|safe }}
+            </div>
+        </section>
+
+        <!-- Category Recommendations -->
+        <section class="card">
+            <h2 class="section-title">
+                <i class="fas fa-map-marked-alt" style="margin-right: 10px;"></i>
+                Destination Recommendations
+            </h2>
+            
+            {% for rec in recommendations %}
+            <div class="recommendation-card">
+                <h3>{{ rec.emoji }} {{ rec.category }}</h3>
+                {% if rec.description %}
+                <p class="recommendation-description">{{ rec.description }}</p>
+                {% endif %}
+                
+                <div class="budget-details">
+                    <div class="budget-detail-item">
+                        <strong>Total Budget:</strong> {{ rec.budget }}
+                    </div>
+                    <div class="budget-detail-item">
+                        <strong>Daily Budget:</strong> {{ rec.daily_budget }}
+                    </div>
+                    <div class="budget-detail-item">
+                        <strong>Per Person:</strong> {{ rec.per_person }}
+                    </div>
+                </div>
+                
+                {% if rec.places %}
+                <h4>Recommended Places:</h4>
+                <div class="places-grid">
+                    {% for place in rec.places %}
+                        {{ place|safe }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                {% if rec.links %}
+                <h4>Booking & Information:</h4>
+                <div class="links-container">
+                    {% for link in rec.links %}
+                    <a href="{{ link.url }}" target="_blank" class="travel-link {{ link.type }}" title="{{ link.name }}">
+                        {{ link.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+
+        <!-- Processing Info -->
+        <div class="processing-info">
+            <p><i class="fas fa-bolt" style="margin-right: 5px;"></i> Plan generated in {{ processing_time }} seconds</p>
+        </div>
+    </div>
+    <a href="{{ url_for('manual') }}"class="plan-another-button">Plan Another Trip</a>
+
+    <script>
+        // Enhanced itinerary formatting
+        function formatItineraryText() {
+            const container = document.querySelector('.ai-plan-content');
+            if (!container) return;
+
+            // Skip if already formatted
+            if (container.innerHTML.includes('<div class="itinerary-container"') || 
+                container.innerHTML.includes('<h3>Day')) {
+                return;
+            }
+
+            let html = container.innerHTML;
+            
+            // Convert markdown-style formatting to HTML
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\* (.*?)<br>/g, '<li>$1</li>');
+            
+            // Convert day headings
+            html = html.replace(/### Day (\d+): (.*?)<br>/g, 
+                '<div class="itinerary-day"><h3 class="itinerary-day-title">Day $1: $2</h3>');
+            
+            // Convert sections
+            html = html.replace(/\*\*Travel:\*\* (.*?)<br>/g, 
+                '<div class="itinerary-section"><h4 class="itinerary-section-title">✈️ Travel</h4><p>$1</p></div>');
+            // Add similar replacements for other sections (Stay, Meals, Activities)
+            
+            // Close day containers
+            html = html.replace(/<div class="itinerary-day">/g, '</div><div class="itinerary-day">');
+            html += '</div>'; // Close last day
+            
+            container.innerHTML = html;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            formatItineraryText();
+            
+            // Animation for cards
+            const cards = document.querySelectorAll('.card, .recommendation-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

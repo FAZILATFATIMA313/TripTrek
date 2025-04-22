@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plan Your Trip | TripTrek</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #a9abad98, #b6bdceaf, #c2d6ffda);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: #2d3748;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 20px;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .trip-form-container {
+      max-width: 850px;
+      width: 100%;
+      background: linear-gradient(145deg, #4367b3e8, #f5f8ff);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 
+        0 4px 30px rgba(67, 97, 238, 0.15),
+        0 0 0 1px rgba(67, 97, 238, 0.1);
+      transition: all 0.3s ease;
+      border-left: 5px solid #4895ef;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trip-form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(67, 97, 238, 0.08) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    .trip-form-container:hover {
+      box-shadow: 
+        0 6px 40px rgba(67, 97, 238, 0.2),
+        0 0 0 1px rgba(67, 97, 238, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .trip-header {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .trip-header h2 {
+      font-size: 32px;
+      color: #2c4fecde;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(67, 97, 238, 0.1);
+    }
+
+    .trip-header p {
+      font-size: 16px;
+      color: #5d7cb6;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #000000;
+    }
+
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(248, 249, 250, 0.726);
+      border: 1px solid #e0e7ff;
+      border-radius: 12px;
+      color: #2d3748;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    select:focus, input:focus {
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+      border-color: #4361ee;
+      background: #ffffff;
+    }
+
+    option {
+      color: #2d3748;
+      background: #ffffff;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(to right, #4361ee, #3a56d4);
+      color: white;
+      border: none;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 500;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(to right, #3f37c9, #3a4bc1);
+      box-shadow: 0 6px 16px rgba(67, 97, 238, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .trip-image {
+      width: 100%;
+      height: 200px;
+      border-radius: 18px;
+      background: linear-gradient(rgba(67, 97, 238, 0.1), rgba(67, 97, 238, 0.1)),
+                  url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      border: 2px solid rgba(67, 97, 238, 0.15);
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .trip-image:hover {
+      transform: scale(1.01);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .priority-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .priority-group select {
+      background-color: #ffffff;
+    }
+
+    .go-back-container a {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      background: rgba(67, 97, 238, 0.08);
+      color: #b2bdec;
+      font-weight: 500;
+      border: 1px solid rgba(39, 47, 87, 0.2);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+    
+    .go-back-container a:hover {
+      background: rgba(67, 97, 238, 0.15);
+      border-color: rgba(67, 97, 238, 0.3);
+      transform: translateX(-2px);
+    }
+
+    .go-back-container a::before {
+      content: "←";
+      margin-right: 6px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="trip-form-container">
+    <div class="go-back-container">
+      <a href="{{ url_for('triptrek') }}">Go Back</a>
+    </div>
+    <div class="trip-image"></div>
+
+    <div class="trip-header">
+      <h2>Plan Your Trip</h2>
+      <p>Customize your journey by choosing what matters most to you!</p>
+    </div>
+
+    <form id="tripForm" action="/recommend" method="POST">
+      <!-- Form fields remain the same as before -->
+      <div class="form-group">
+        <label for="source">Your Location (Editable):</label>
+        <input type="text" id="source" name="source" placeholder="Fetching current location..." required />
+      </div>
+
+      <div class="form-group">
+        <label for="destination">Enter Destination:</label>
+        <input type="text" id="destination" name="destination" placeholder="e.g. Goa, Manali, etc." required />
+      </div>
+
+      <div class="form-group">
+        <label for="budget">Budget (INR):</label>
+        <input type="number" id="budget" name="budget" placeholder="e.g. 20000" required />
+      </div>
+
+      <div class="form-group">
+        <label for="people">Number of People:</label>
+        <input type="number" id="people" name="people" placeholder="e.g. 2" required />
+      </div>
+
+      <div class="form-group">
+        <label for="days">Trip Duration (Days):</label>
+        <input type="number" id="days" name="days" placeholder="e.g. 4" required />
+      </div>
+
+      <div class="form-group">
+        <label>Set Your Priorities:</label>
+        <div class="priority-group">
+          <!-- Priority selects remain the same -->
+          <div>
+            <label for="priority1">Priority 1</label>
+            <select id="priority1" name="priority1" required>
+              <option value="">-- Select --</option>
+              <option value="food">Food</option>
+              <option value="hotel">Hotel</option>
+              <option value="travel">Travel Mode</option>
+              <option value="shopping">Shopping</option>
+              <option value="Other Activities">Other Activities</option>
+            </select>
+          </div>
+          <div>
+            <label for="priority2">Priority 2</label>
+            <select id="priority2" name="priority2" required>
+              <option value="">-- Select --</option>
+              <option value="food">Food</option>
+              <option value="hotel">Hotel</option>
+              <option value="travel">Travel Mode</option>
+              <option value="shopping">Shopping</option>
+              <option value="Other Activities">Other Activities</option>
+            </select>
+          </div>
+          <div>
+            <label for="priority3">Priority 3</label>
+            <select id="priority3" name="priority3" required>
+              <option value="">-- Select --</option>
+              <option value="food">Food</option>
+              <option value="hotel">Hotel</option>
+              <option value="travel">Travel Mode</option>
+              <option value="shopping">Shopping</option>
+              <option value="Other Activities">Other Activities</option>
+            </select>
+          </div>
+          <div>
+            <label for="priority4">Priority 4</label>
+            <select id="priority4" name="priority4">
+              <option value="">-- Optional --</option>
+              <option value="food">Food</option>
+              <option value="hotel">Hotel</option>
+              <option value="travel">Travel Mode</option>
+              <option value="shopping">Shopping</option>
+              <option value="Other Activities">Other Activities</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="submit-btn">Get Recommendations</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Auto-fetch user's location in Lat,Lon format
+    window.onload = function () {
+      const sourceInput = document.getElementById('source');
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            const lat = position.coords.latitude.toFixed(4);
+            const lon = position.coords.longitude.toFixed(4);
+            sourceInput.value = `${lat},${lon}`;
+          },
+          function () {
+            sourceInput.placeholder = "Couldn't fetch location. Enter manually.";
+          }
+        );
+      } else {
+        sourceInput.placeholder = "Geolocation not supported.";
+      }
+    };
+  </script>
+</body>
+</html>

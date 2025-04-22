@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Recommendations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #001219, #003845, #005f73);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .recommendation-container {
+    max-width: 1000px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .recommendation-container:hover {
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.35);
+  }
+
+  h1, h2 {
+    color: #00ffff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #00ffff;
+  }
+
+  p, li {
+    color: #bce3ea;
+    margin-bottom: 8px;
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+    list-style-type: disc;
+  }
+
+  a {
+    color: #00ffff;
+    text-decoration: none;
+    transition: color 0.3s, text-shadow 0.3s;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 8px #00ffff;
+  }
+
+  .card {
+    background: rgba(0, 20, 30, 0.75);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 24px;
+    margin: 25px 0;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 0 35px rgba(0, 255, 255, 0.3);
+  }
+  .card h2 {
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+  }
+  
+  
+
+  .back-btn {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 12px 24px;
+    background: #00ffff;
+    color: #001219;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background 0.3s, transform 0.2s;
+    font-weight: 600;
+  }
+
+  .back-btn:hover {
+    background: #00e6e6;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #00ffff;
+  }
+
+  /* Updated AI-powered section styles */
+#ai-plan {
+  background: rgba(0, 20, 30, 0.75);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+  color: #d6f7ff;
+}
+
+/* AI Heading Glow */
+.container h2.text-primary {
+  color: #00ffff !important;
+  text-shadow: 0 0 8px #00ffff;
+}
+
+/* AI Subcontent (inside the white div before) */
+#ai-plan p,
+#ai-plan li,
+#ai-plan span,
+#ai-plan div {
+  color: #d6f7ff !important;
+}
+
+</style>
+
+    
+</head>
+<body>
+  <div class="recommendation-container">
+    <h1>🧳 Trip Plan from {{ source }} to {{ destination }}</h1>
+    <p><strong>Number of People:</strong> {{ people }}</p>
+    <p><strong>Budget:</strong> ₹{{ budget }}</p>
+    <p><strong>Priorities:</strong> {{ priority1 }}, {{ priority2 }}, {{ priority3 }}{% if priority4 %}, {{ priority4 }}{% endif %}</p>
+
+    <div class="card">
+      <h2>🚀 Travel Suggestion</h2>
+      {{ travel_suggestion|safe }}
+    </div>
+    
+    <div class="container mt-5">
+      <h2 class="text-primary">🧭 AI-Powered Trip Plan</h2>
+      <div id="ai-plan" class="p-4">
+    {{ ai_plan|safe }}
+</div>
+
+  </div>
+  
+
+    <div class="card">
+      <h2>🎯 Priority-Based Recommendations</h2>
+      <ul>
+        {{ rec|safe }}
+      </ul>
+    </div>
+
+    <a href="/" class="back-btn">← Plan Another Trip</a>
+  </div>
+  <script>
+    window.addEventListener('load', function () {
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        preloader.style.opacity = 0;
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 500);
+      }
+    });
+  </script>
+  
+</body>
+</html>

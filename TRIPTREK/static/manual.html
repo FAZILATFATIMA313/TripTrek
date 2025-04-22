@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan Your Trip By Yourself</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #001219, #003845, #005f73);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      color: #fff;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #00bcd4;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      color: #d3faff;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background: #00bcd4;
+      border: none;
+      border-radius: 10px;
+      color: #001219;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #00e0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Plan Your Trip By Yourself</h1>
+    <form id="tripForm">
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" name="destination" required />
+
+      <label for="date">Date of Travel:</label>
+      <input type="date" id="date" name="date" required />
+
+      <label for="transport">Means of Travel:</label>
+      <select id="transport" name="transport" required>
+        <option value="">Select</option>
+        <option value="flight">Flight</option>
+        <option value="train">Train</option>
+        <option value="bus">Bus</option>
+        <option value="car">Car</option>
+      </select>
+
+      <label for="class">Class of Travel:</label>
+      <select id="class" name="class">
+        <option value="">Select</option>
+        <option value="economy">Economy</option>
+        <option value="business">Business</option>
+        <option value="first">First Class</option>
+      </select>
+
+      <label for="accommodation">Accommodation Type:</label>
+      <select id="accommodation" name="accommodation">
+        <option value="">Select</option>
+        <option value="hotel">Hotel</option>
+        <option value="hostel">Hostel</option>
+        <option value="bnb">Bed & Breakfast</option>
+        <option value="resort">Resort</option>
+      </select>
+
+      <label for="activities">Activities:</label>
+      <textarea id="activities" name="activities" rows="3" placeholder="e.g., hiking, sightseeing, museum visits..."></textarea>
+
+      <label for="food">Preferred Food Type:</label>
+      <input type="text" id="food" name="food" placeholder="e.g., vegetarian, non-veg, street food..." />
+
+      <label for="people">Number of People:</label>
+      <input type="number" id="people" name="people" min="1" required />
+
+      <label for="budget">Estimated Budget (₹):</label>
+      <input type="number" id="budget" name="budget" min="0" placeholder="e.g., 10000" />
+
+      <label for="duration">Duration of Trip (in days):</label>
+      <input type="number" id="duration" name="duration" min="1" placeholder="e.g., 5" />
+
+      <label for="special">Special Requirements:</label>
+      <textarea id="special" name="special" rows="2" placeholder="e.g., wheelchair access, kid-friendly, dietary needs..."></textarea>
+
+      <button type="submit">Get Recommendations</button>
+    </form>
+  </div>
+
+  <script>
+    const response = await fetch("http://localhost:5000/plan-trip", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+  });
+  
+    document.getElementById("tripForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+    
+      const formData = {
+        destination: document.getElementById("destination").value,
+        date: document.getElementById("date").value,
+        transport: document.getElementById("transport").value,
+        class: document.getElementById("class").value,
+        accommodation: document.getElementById("accommodation").value,
+        activities: document.getElementById("activities").value,
+        food: document.getElementById("food").value,
+        people: document.getElementById("people").value,
+        budget: document.getElementById("budget").value,
+        duration: document.getElementById("duration").value,
+        special: document.getElementById("special").value,
+      };
+    
+      const response = await fetch("/plan-trip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+    
+      const data = await response.json();
+    
+      const resultContainer = document.getElementById("results");
+    
+      if (data.error) {
+        resultContainer.innerHTML = `<p style="color: red;">${data.error}</p>`;
+        return;
+      }
+    
+      const resultContainer = document.getElementById("results");
+
+      let resultHtml = "<h2>Recommended Hotels</h2><ul>";
+      data.hotels.forEach(hotel => {
+        resultHtml += `<li><a href="${hotel.link}" target="_blank">${hotel.name}</a> - ${hotel.address} (⭐ ${hotel.rating || "N/A"})</li>`;
+      });
+      resultHtml += "</ul>";
+
+      resultHtml += "<h2>Recommended Restaurants</h2><ul>";
+      data.restaurants.forEach(place => {
+        resultHtml += `<li><a href="${place.link}" target="_blank">${place.name}</a> - ${place.address} (⭐ ${place.rating || "N/A"})</li>`;
+      });
+      resultHtml += "</ul>";
+
+      let budgetInfo = `<h3>Budget Breakdown</h3>
+      <ul>
+        <li><b>Travel:</b> ₹${data.budget_breakdown.travel}</li>
+        <li><b>Hotel:</b> ₹${data.budget_breakdown.hotel}</li>
+        <li><b>Food:</b> ₹${data.budget_breakdown.food}</li>
+        <li><b>Miscellaneous:</b> ₹${data.budget_breakdown.misc}</li>
+      </ul>`;
+
+      resultContainer.innerHTML = budgetInfo + resultHtml;
+
+    
+      // Budget Breakdown
+      if (data.budget_breakdown) {
+        resultHtml += `<h3>Budget Breakdown</h3>
+          <ul>
+            <li><b>Travel:</b> ₹${data.budget_breakdown.travel}</li>
+            <li><b>Hotel:</b> ₹${data.budget_breakdown.hotel}</li>
+            <li><b>Food:</b> ₹${data.budget_breakdown.food}</li>
+            <li><b>Miscellaneous:</b> ₹${data.budget_breakdown.misc}</li>
+          </ul>`;
+      }
+    
+      // Hotels
+      resultHtml += "<h2>Recommended Hotels</h2><ul>";
+      data.hotels.forEach(hotel => {
+        resultHtml += `<li><a href="${hotel.link}" target="_blank">${hotel.name}</a> - ${hotel.address} (⭐ ${hotel.rating || "N/A"})</li>`;
+      });
+      resultHtml += "</ul>";
+    
+      // Restaurants
+      resultHtml += "<h2>Recommended Restaurants</h2><ul>";
+      data.restaurants.forEach(place => {
+        resultHtml += `<li><a href="${place.link}" target="_blank">${place.name}</a> - ${place.address} (⭐ ${place.rating || "N/A"})</li>`;
+      });
+      resultHtml += "</ul>";
+    
+      resultContainer.innerHTML = resultHtml;
+    });
+    
+  </script>
+  
+  <div id="results" style="margin-top: 2rem; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px;"></div>
+  
+</body>
+
+</html>

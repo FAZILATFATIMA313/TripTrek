@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>travel planner</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style> 
+:root {
+
+  /**
+   * colors
+   */
+
+  --united-nations-blue: hsl(214, 56%, 58%);
+  --bright-navy-blue: hsl(214, 57%, 51%);
+  --spanish-gray: hsl(0, 0%, 60%);
+  --black-coral: hsl(225, 8%, 42%);
+  --oxford-blue: hsl(208, 97%, 12%);
+  --yale-blue: hsl(214, 72%, 33%);
+  --blue-ncs: hsl(197, 100%, 36%);
+  --gunmetal: hsl(206, 34%, 20%);
+  --gainsboro: hsl(0, 0%, 88%);
+  --cultured: hsl(0, 0%, 98%);
+  --white: hsl(0, 0%, 100%);
+  --black: hsl(0, 0%, 0%);
+  --onyx: hsl(0, 0%, 25%);
+  --jet: hsl(0, 0%, 20%);
+
+  /**
+   * typography
+   */
+
+  --ff-poppins: "Poppins", sans-serif;
+  --ff-montserrat: "Montserrat", sans-serif;
+
+  --fs-1: calc(20px + 3.5vw);
+  --fs-2: calc(18px + 1.6vw);
+  --fs-3: calc(16px + 0.45vw);
+  --fs-4: 15px;
+  --fs-5: 14px;
+  --fs-6: 13px;
+  --fs-7: 12px;
+  --fs-8: 11px;
+
+  --fw-500: 500;
+  --fw-600: 600;
+  --fw-700: 700;
+  --fw-800: 800;
+
+  /**
+   * transition
+   */
+
+  --transition: 0.25s ease-in-out;
+
+  /**
+   * spacing
+   */
+
+  --section-padding: 60px;
+
+  /**
+   * border-radius
+   */
+
+  --radius-15: 15px;
+  --radius-25: 25px;
+
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #RESET
+\*-----------------------------------*/
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+img,
+span,
+input,
+label,
+button,
+ion-icon {
+  display: block;
+}
+
+input,
+button {
+  background: none;
+  border: none;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+}
+
+ion-icon {
+  pointer-events: none;
+}
+
+html {
+  font-family: var(--ff-poppins);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--white);
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #REUSED STYLE
+\*-----------------------------------*/
+
+.container {
+  padding-inline: 15px;
+}
+
+.btn {
+  color: var(--white);
+  text-transform: uppercase;
+  font-size: var(--fs-5);
+  border-radius: 100px;
+  padding: var(--padding, 8px 18px);
+  border: var(--border-width, 2px) solid transparent;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: hsl(74.77deg 57% 51%);
+  color: black;
+}
+
+.btn-primary:is(:hover, :focus) {
+  background: hsl(75, 48%, 49%);
+}
+
+.btn-secondary {
+  border-color: var(--white);
+}
+
+.btn-secondary:is(:hover, :focus) {
+  background: hsla(0, 0%, 100%, 0.1);
+}
+
+.h1,
+.h2,
+.h3 {
+  font-weight: var(--fw-800);
+  font-family: var(--ff-montserrat);
+  text-transform: uppercase;
+}
+
+.h1 {
+  color: var(--white);
+  font-size: var(--fs-1);
+}
+
+.h2,
+.h3 {
+  color: var(--gunmetal);
+}
+
+.h2 {
+  font-size: var(--fs-2);
+}
+
+.h3 {
+  font-size: var(--fs-3);
+  font-weight: var(--fw-700);
+}
+
+.section-subtitle {
+  color: var(--bright-navy-blue);
+  font-size: var(--fs-5);
+  text-transform: uppercase;
+  font-family: var(--ff-montserrat);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  margin-bottom: 15px;
+}
+
+.section-text {
+  color: var(--black-coral);
+  margin-bottom: 30px;
+}
+
+.card-text {
+  color: var(--black-coral);
+  font-size: var(--fs-5);
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #HEADER
+\*-----------------------------------*/
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-top: 61px;
+  z-index: 4;
+}
+
+.header-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: var(--transition);
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+  padding-block: 15px;
+  z-index: 1;
+}
+
+.header.active .header-top {
+  position: fixed;
+  background: var(--gunmetal);
+}
+
+.header-top .container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: flex-start;
+  align-items: center;
+}
+
+.helpline-box .wrapper {
+  display: none;
+}
+
+.helpline-box .icon-box {
+  background: hsl(74.77deg 57% 51%);
+  padding: 6px;
+  border-radius: 50%;
+  color: var(--white);
+}
+
+.helpline-box .icon-box ion-icon {
+  --ionicon-stroke-width: 40px;
+}
+
+.header-top .logo {
+  margin-inline: auto;
+  margin-inline: auto;
+  font-size: 2rem;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.header-top .logo img {
+  max-width: 100px;
+}
+
+.header-btn-group {
+  justify-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--white);
+}
+
+.search-btn,
+.nav-open-btn {
+  font-size: 30px;
+  color: inherit;
+}
+
+.search-btn {
+  font-size: 20px;
+}
+
+.header-bottom {
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+}
+
+.header-bottom .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 15px;
+}
+
+/* .social-list {             ............. ( not use this CSS ok hiba ) 
+  display: none;
+  align-items: center;
+  gap: 5px;
+}
+
+.social-link {
+  color: var(--white);
+  padding: 8px;
+  border: 1px solid hsla(0, 0%, 100%, 0.3);
+  border-radius: 50%;
+  font-size: 15px;
+  transition: var(--transition);
+}
+
+.social-link:is(:hover, :focus) {
+  background: hsla(0, 0%, 100%, 0.2);
+} */
+
+.header .btn {
+  --padding: 4px 20px;
+}
+
+.header .navbar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  background: var(--white);
+  visibility: hidden;
+  pointer-events: none;
+  transition: 0.15s ease-in;
+  z-index: 3;
+}
+
+.navbar.active {
+  right: 0;
+  visibility: visible;
+  pointer-events: all;
+  transition: 0.25s ease-out;
+}
+
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 15px;
+}
+
+.navbar-top .logo img {
+  width: 150px;
+}
+
+.nav-close-btn {
+  font-size: 20px;
+  color: var(--bright-navy-blue);
+}
+
+.nav-close-btn ion-icon {
+  --ionicon-stroke-width: 80px;
+}
+
+.navbar-list {
+  border-top: 1px solid hsla(0, 0%, 0%, 0.1);
+}
+
+.navbar-list li {
+  border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+}
+
+.navbar-link {
+  padding: 15px 20px;
+  color: var(--jet);
+  font-weight: var(--fw-500);
+  font-size: var(--fs-4);
+  transition: var(--transition);
+  text-transform: capitalize;
+}
+
+.navbar-link:is(:hover, :focus) {
+  color: var(--bright-navy-blue);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: var(--transition);
+}
+
+.overlay.active {
+  opacity: 0.7;
+  pointer-events: all;
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #HERO
+\*-----------------------------------*/
+
+.hero {
+  background-image: url("https://images.unsplash.com/photo-1516406742981-2b7d67ec4ae8?w=500&amp;auto=format&amp;fit=crop&amp;q=60&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG1hbmFsaXxlbnwwfHwwfHx8MA%3D%3D");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: hsla(0, 0%, 0%, 0.7);
+  background-blend-mode: overlay;
+  display: grid;
+  place-items: center;
+  min-height: 600px;
+  text-align: center;
+  padding-top: 125px;
+}
+
+.hero-title {
+  margin-bottom: 20px;
+}
+
+.hero-text {
+  color: var(--white);
+  font-size: var(--fs-5);
+  margin-bottom: 40px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/*-----------------------------------*\
+ * #FEATURES SECTION
+\*-----------------------------------*/
+
+.features {
+  background: hsl(74.77deg 57% 51%);
+  padding-block: var(--section-padding);
+  color: var(--black);
+  text-align: center;
+}
+
+.features .section-title {
+  font-size: var(--fs-2);
+  font-weight: var(--fw-700);
+  margin-bottom: 40px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.feature-item {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: hsl(210, 100%, 35%);
+  margin-bottom: 15px;
+}
+
+.feature-item h3 {
+  font-size: var(--fs-4);
+  font-weight: var(--fw-600);
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  font-size: var(--fs-5);
+  color: var(--spanish-gray);
+}
+
+
+/*-----------------------------------*\
+ * #POPULAR
+\*-----------------------------------*/
+
+.popular {
+  padding-block: var(--section-padding);
+}
+
+.popular-list,
+.popular-list&gt;li:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.popular-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-25);
+  height: 430px;
+}
+
+.popular-card .card-img {
+  height: 100%;
+}
+
+.popular-card .card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popular-card .card-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: var(--white);
+  border-radius: var(--radius-25);
+  padding: 20px;
+}
+
+
+.popular-card .card-rating {
+  background: hsl(74.77deg 57% 51%);
+
+  color: var(--white);
+  position: absolute;
+  top: 0;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.popular-card .card-subtitle {
+  color: var(--blue-ncs);
+  font-size: var(--fs-6);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.popular-card .card-title {
+  margin-bottom: 5px;
+}
+
+.popular-card :is(.card-subtitle, .card-title)&gt;a {
+  color: inherit;
+}
+
+.popular .btn {
+  margin-inline: auto;
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #PACKAGE
+\*-----------------------------------*/
+
+.package {
+  padding-block: var(--section-padding);
+}
+
+.package-list {
+  margin-bottom: 40px;
+}
+
+.package-list&gt;li:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.package-card {
+  background: var(--cultured);
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.package-card .card-banner {
+  height: 250px;
+}
+
+.package-card .card-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.package-card .card-content {
+  padding: 30px 20px;
+}
+
+.package-card .card-title {
+  margin-bottom: 15px;
+}
+
+.package-card .card-text {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.card-meta-list {
+  background: var(--white);
+  max-width: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.15);
+  border-radius: 50px;
+}
+
+.card-meta-item {
+  position: relative;
+}
+
+.card-meta-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: -1px;
+  bottom: 4px;
+  width: 1px;
+  background: hsla(0, 0%, 0%, 0.3);
+}
+
+.meta-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding-inline: 9px;
+  color: var(--black-coral);
+  font-size: var(--fs-8);
+}
+
+.meta-box&gt;ion-icon {
+  color: var(--bright-navy-blue);
+  font-size: 13px;
+}
+
+.package-card .card-price {
+  background: var(--united-nations-blue);
+  color: var(--white);
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.package-card .card-price .wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px 15px;
+  margin-bottom: 10px;
+}
+
+.package-card .card-price .reviews {
+  font-size: var(--fs-5);
+}
+
+.package-card .card-rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+  font-size: 14px;
+}
+
+.package-card .card-rating ion-icon:last-child {
+  color: hsl(0, 0%, 80%);
+}
+
+.package-card .price {
+  font-size: var(--fs-2);
+  font-family: var(--ff-montserrat);
+  font-weight: var(--fw-800);
+  margin-bottom: 20px;
+}
+
+.package-card .price span {
+  font-size: var(--fs-7);
+  font-weight: initial;
+}
+
+.package .btn {
+  margin-inline: auto;
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #GALLERY
+\*-----------------------------------*/
+
+.gallery {
+  padding-block: var(--section-padding);
+}
+
+.gallery-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-15);
+  overflow: hidden;
+}
+
+.gallery-item:nth-child(3) {
+  grid-area: 1 / 2 / 3 / 3;
+}
+
+.gallery-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #CTA
+\*-----------------------------------*/
+
+.cta {
+  background: hsl(74.77deg 57% 51%);
+
+  padding-block: var(--section-padding);
+}
+
+.cta :is(.section-subtitle, .section-title, .section-text) {
+  color: var(--white);
+}
+
+.cta .section-text {
+  font-size: var(--fs-5);
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #FOOTER
+\*-----------------------------------*/
+
+.footer-top {
+  background: var(--gunmetal);
+  padding-block: var(--section-padding);
+  color: var(--gainsboro);
+}
+
+.footer-brand {
+  margin-bottom: 30px;
+}
+
+.footer-brand img {
+  width: 180px;
+}
+
+.footer-brand .logo {
+  margin-bottom: 20px;
+}
+
+.footer-text {
+  font-size: var(--fs-5);
+  line-height: 1.7;
+}
+
+.footer-contact {
+  margin-bottom: 30px;
+}
+
+.contact-title {
+  position: relative;
+  font-family: var(--ff-montserrat);
+  font-weight: var(--fw-500);
+  margin-bottom: 30px;
+}
+
+.contact-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: hsl(74.77deg 57% 51%);
+
+}
+
+.contact-text {
+  font-size: var(--fs-5);
+  margin-bottom: 15px;
+  max-width: 200px;
+}
+
+.contact-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.contact-item ion-icon {
+  --ionicon-stroke-width: 40px;
+}
+
+.contact-link,
+address {
+  font-style: normal;
+  color: var(--gainsboro);
+  font-size: var(--fs-5);
+}
+
+.contact-link:is(:hover, :focus) {
+  color: var(--white);
+}
+
+.form-text {
+  font-size: var(--fs-5);
+  margin-bottom: 20px;
+}
+
+.footer-form .input-field {
+  background: var(--white);
+  font-size: var(--fs-5);
+  padding: 15px 20px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+
+.footer-form .btn {
+  width: 100%;
+}
+
+.footer-bottom {
+  --gunmetal: hsl(205, 36%, 17%);
+  background: var(--gunmetal);
+  padding-block: 20px;
+  text-align: center;
+}
+
+.copyright {
+  color: var(--gainsboro);
+  font-size: var(--fs-5);
+  margin-bottom: 10px;
+}
+
+.copyright a {
+  color: inherit;
+  display: inline-block;
+}
+
+.copyright a:is(:hover, :focus) {
+  color: var(--white);
+}
+
+.footer-bottom-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 21px;
+}
+
+.footer-bottom-list&gt;li {
+  position: relative;
+}
+
+.footer-bottom-list&gt;li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: -10px;
+  bottom: 3px;
+  width: 1px;
+  background: hsla(0, 0%, 100%, 0.2);
+}
+
+.footer-bottom-link {
+  color: var(--gainsboro);
+  font-size: var(--fs-7);
+  transition: var(--transition);
+}
+
+.footer-bottom-link:is(:hover, :focus) {
+  color: var(--white);
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #GO TO TOP
+\*-----------------------------------*/
+
+.go-top {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  background: hsl(74.77deg 57% 51%);
+
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.5);
+  opacity: 0;
+  transform: translateY(10px);
+  visibility: hidden;
+  transition: var(--transition);
+}
+
+.go-top.active {
+  opacity: 0.8;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.go-top:is(:hover, :focus) {
+  opacity: 1;
+}
+
+
+
+
+
+/*-----------------------------------*\
+ * #MEDIA QUERIES
+\*-----------------------------------*/
+
+/**
+ * responsive for larger than 580px screen
+ */
+
+@media (min-width: 580px) {
+
+  /**
+   * REUSED STYLE
+   */
+
+  .container {
+    max-width: 580px;
+    margin-inline: auto;
+  }
+
+  .btn {
+    --fs-5: 16px;
+    --padding: 12px 30px;
+  }
+
+  section:not(.cta) :is(.section-subtitle, .section-title, .section-text) {
+    text-align: center;
+  }
+
+  .section-text {
+    margin-bottom: 40px;
+  }
+
+  .card-text {
+    --fs-5: 15px;
+  }
+
+
+
+  /**
+   * HEADER
+   */
+
+  .header {
+    padding-top: 83px;
+  }
+
+  .helpline-box .icon-box {
+    padding: 14px;
+  }
+
+  .header-top .logo img {
+    max-width: unset;
+  }
+
+  .search-btn {
+    font-size: 30px;
+  }
+
+  .nav-open-btn {
+    font-size: 40px;
+  }
+
+  .header .btn {
+    --fs-5: 14px;
+    --padding: 6px 20px;
+  }
+
+
+
+  /**
+   * HERO
+   */
+
+  .hero {
+    min-height: 800px;
+    padding-top: 85px;
+  }
+
+  .hero-text {
+    --fs-5: 15px;
+  }
+
+  .btn-group {
+    gap: 20px;
+  }
+
+
+
+  /**
+   * TOUR SEARCH
+   */
+
+  .tour-search-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: flex-end;
+    gap: 15px;
+  }
+
+  .tour-search-form .input-wrapper {
+    margin-bottom: 0;
+  }
+
+  .tour-search-form .input-field {
+    padding: 16px 20px;
+  }
+
+  .tour-search .btn {
+    grid-column: span 2;
+    margin-top: 20px;
+  }
+
+
+
+  /**
+   * POPULAR
+   */
+
+  .popular-card .card-content {
+    right: auto;
+  }
+
+
+
+  /**
+   * FOOTER
+   */
+
+  .footer .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  .footer-form {
+    grid-column: span 2;
+  }
+
+  .footer-bottom {
+    text-align: left;
+  }
+
+  .copyright {
+    margin-bottom: 0;
+  }
+
+  .footer-bottom-list {
+    justify-content: flex-end;
+  }
+
+}
+
+
+
+
+
+/**
+ * responsive for larger than 768px screen
+ */
+
+@media (min-width: 768px) {
+
+  /**
+   * CUSTOM PROPERTY
+   */
+
+  :root {
+
+    /**
+     * typography
+     */
+
+    --fs-5: 15px;
+
+  }
+
+
+
+  /**
+   * REUSED STYLE
+   */
+
+  .container {
+    max-width: 800px;
+  }
+
+  .section-text {
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+
+
+
+  /**
+   * HEADER
+   */
+
+  .helpline-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .helpline-box .wrapper {
+    display: block;
+    color: var(--white);
+    font-size: var(--fs-6);
+  }
+
+  .social-list {
+    gap: 10px;
+  }
+
+
+
+  /**
+   * POPULAR
+   */
+
+  .popular-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+
+  .popular-list&gt;li:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .popular-card .card-content {
+    right: 20px;
+  }
+
+
+
+  /**
+   * PACKAGE
+   */
+
+  .package-list {
+    margin-bottom: 50px;
+  }
+
+  .package-list&gt;li:not(:last-child) {
+    margin-bottom: 40px;
+  }
+
+  .package-card {
+    display: grid;
+    grid-template-columns: 1.3fr 1.5fr 1fr;
+  }
+
+  .package-card .card-banner {
+    height: 100%;
+  }
+
+  .package-card .card-content {
+    padding: 40px;
+  }
+
+  .package-card .card-price {
+    display: grid;
+    place-content: center;
+  }
+
+  .package-card .card-price .wrapper {
+    margin-bottom: 15px;
+  }
+
+
+
+  /**
+   * GALLERY
+   */
+
+  .gallery {
+    padding-bottom: calc(var(--section-padding * 2));
+  }
+
+  .gallery-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .gallery-image {
+    border-radius: var(--radius-25);
+  }
+
+
+
+  /**
+   * CTA
+   */
+
+  .cta .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cta-content {
+    width: calc(100% - 225px);
+  }
+
+  .cta .section-text {
+    margin-inline: 0;
+  }
+
+
+
+  /**
+   * FOOTER
+   */
+
+  .form-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-form .input-field {
+    margin-bottom: 0;
+  }
+
+  .footer-form .btn {
+    width: max-content;
+  }
+
+}
+
+
+
+
+
+/**
+ * responsive for larger than 992px screen
+ */
+
+@media (min-width: 992px) {
+
+  /**
+   * REUSED STYLE
+   */
+
+  .container {
+    max-width: 1050px;
+  }
+
+
+
+  /**
+   * HEADER
+   */
+
+  .header.active .header-top {
+    position: unset;
+    background: unset;
+  }
+
+  .nav-open-btn,
+  .navbar-top {
+    display: none;
+  }
+
+  .header-bottom {
+    border-bottom: none;
+  }
+
+  .header.active .header-bottom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--white);
+    color: var(--onyx);
+    box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.08);
+    transition: var(--transition);
+  }
+
+  .header-bottom .container {
+    padding-block: 0;
+  }
+
+  .header .navbar {
+    all: unset;
+  }
+
+  .navbar-list {
+    border-top: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .navbar-list li {
+    border-bottom: none;
+  }
+
+  .navbar-link:hover {
+    color: black;
+    background: hsl(74.77deg 57% 51%);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+
+  .navbar-link {
+    color: var(--white);
+    --fs-4: 16px;
+    font-weight: unset;
+    text-transform: uppercase;
+    padding: 20px 15px;
+  }
+
+  .header.active .navbar-link {
+    color: var(--onyx);
+  }
+
+  .header.active .navbar-link:is(:hover, :focus) {
+    color: var(--bright-navy-blue);
+  }
+
+  .header.active .social-link {
+    color: var(--onyx);
+    border-color: hsla(0, 0%, 0%, 0.15);
+  }
+
+  .overlay {
+    display: none;
+  }
+
+
+
+  /**
+   * HERO
+   */
+
+  .hero .container {
+    max-width: 740px;
+  }
+
+
+
+  /**
+   * TOUR SEARCH
+   */
+
+  .tour-search-form {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .tour-search .btn {
+    --padding: 15px;
+    grid-column: unset;
+    margin-top: 0;
+  }
+
+
+
+  /**
+   * POPULAR
+   */
+
+  .popular-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+
+
+  /**
+   * PACKAGE
+   */
+
+  .meta-box {
+    --fs-8: 13px;
+  }
+
+  .meta-box&gt;ion-icon {
+    font-size: 15px;
+  }
+
+
+
+  /**
+   * CTA
+   */
+
+  .cta .section-title {
+    max-width: 25ch;
+  }
+
+
+
+  /**
+   * FOOTER
+   */
+
+  .footer-top .container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+  }
+
+  .footer-form {
+    grid-column: unset;
+  }
+
+  .form-wrapper {
+    flex-direction: column;
+  }
+
+  .footer-form .btn {
+    width: 100%;
+  }
+
+}
+
+
+
+
+
+/**
+ * responsive for larger than 1200px screen
+ */
+
+@media (min-width: 1200px) {
+
+  /**
+   * CUSTOM PROPERTY
+   */
+
+  :root {
+
+    /**
+     * spacing
+     */
+
+    --section-padding: 100px;
+
+  }
+
+
+
+  /**
+   * REUSED STYLE
+   */
+
+  .container {
+    max-width: 1180px;
+  }
+
+}
+</style>
+<form action="/recommend" method="POST">
+<header class="header" data-header>
+
+  <div class="overlay" data-overlay></div>
+
+  <div class="header-top">
+    <div class="container">
+
+      <a href="tel:+01123456790" class="helpline-box">
+
+        <div class="icon-box">
+
+        </div>
+
+        <div class="wrapper">
+          <p class="helpline-title">For Further Inquires :</p>
+
+          <p class="helpline-number">+01 (123) 4567 90</p>
+        </div>
+
+      </a>
+
+      <a href="#" class="logo">
+        TRIP TREK
+      </a>
+
+      <div class="header-btn-group">
+
+        <button class="search-btn" aria-label="Search">
+
+        </button>
+
+        <button class="nav-open-btn" aria-label="Open Menu" data-nav-open-btn>
+
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="header-bottom">
+    <div class="container">
+
+      <ul class="social-list">
+
+        <li>
+          <a href="#" class="social-link">
+
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="social-link">
+
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="social-link">
+
+          </a>
+        </li>
+
+      </ul>
+
+      
+
+      <nav class="navbar" data-navbar>
+
+        <div class="navbar-top">
+      
+          <a href="#" class="logo">
+            <img decoding="async" src="./assets/images/logo-blue.svg" alt="Tourly logo">
+          </a>
+      
+          <button class="nav-close-btn" aria-label="Close Menu" data-nav-close-btn>
+            <!-- You can add an icon here if needed -->
+          </button>
+      
+        </div>
+      
+        <ul class="navbar-list">
+      
+          <li>
+            <a href="#home" class="navbar-link" data-nav-link>home</a>
+          </li>
+      
+          <li>
+            <a href="#about" class="navbar-link" data-nav-link>about us</a>
+          </li>
+      
+          <li>
+            <a href="#destination" class="navbar-link" data-nav-link>destination</a>
+          </li>
+      
+          <li>
+            <a href="#package" class="navbar-link" data-nav-link>packages</a>
+          </li>
+      
+          <li>
+            <a href="#gallery" class="navbar-link" data-nav-link>gallery</a>
+          </li>
+      
+          <li>
+            <a href="#contact" class="navbar-link" data-nav-link>contact us</a>
+          </li>
+      
+        </ul>
+      
+      </nav>
+      
+      
+      
+</header>
+
+
+
+
+
+<main>
+  <article>
+
+    <!--
+      - #HERO
+    -->
+
+    <section class="hero" id="home">
+      <div class="container">
+
+        <h2 class="h1 hero-title">Journey to explore world</h2>
+
+        <p class="hero-text">
+         "Travel far, explore more, and live fully. Adventure awaits at every turn, 
+         creating memories that last a lifetime. Let the world be your playground and 
+         discover the beauty of every journey."
+        </p>
+<!-- Plan Your Trip Button (Centered inside the Hero box) -->
+<div class="btn-group" style="display: flex; justify-content: center; margin-top: 30px;">
+    <button onclick="openModal()" 
+      style="background-color: hsl(74.77deg 57% 51%); color: #001219; font-size: 1.2rem; padding: 15px 35px; 
+      border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+      Plan Your Trip
+    </button>
+  </div>
+  
+  
+
+      </div>
+    </section>
+
+
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="section-title">Features We Provide</h2>
+        <div class="features-grid">
+    
+          <div class="feature-item">
+            <i class="fas fa-map-marked-alt feature-icon"></i>
+            <h3>Personalized Travel Planning</h3>
+            <p>Get customized travel plans based on your budget, interests, and duration.</p>
+          </div>
+    
+          <div class="feature-item">
+            <i class="fas fa-hotel feature-icon"></i>
+            <h3>Accommodation Finder</h3>
+            <p>Find and compare hotels, hostels, and resorts near your destination.</p>
+          </div>
+    
+          <div class="feature-item">
+            <i class="fas fa-utensils feature-icon"></i>
+            <h3>Food & Cuisine Recommendations</h3>
+            <p>Discover popular restaurants, street food, and local cuisines based on your preferences.</p>
+          </div>
+    
+          <div class="feature-item">
+            <i class="fas fa-bus feature-icon"></i>
+            <h3>Transport Options</h3>
+            <p>Explore travel options by train, bus, or cab with estimated timings and fares.</p>
+          </div>
+    
+          <div class="feature-item">
+            <i class="fas fa-chart-line feature-icon"></i>
+            <h3>Budget Breakdown</h3>
+            <p>Smart division of your budget across transport, stay, food, and activities.</p>
+          </div>
+    
+          <div class="feature-item">
+            <i class="fas fa-calendar-alt feature-icon"></i>
+            <h3>Activity Suggestions</h3>
+            <p>Get suggestions for tourist attractions and experiences you shouldn’t miss.</p>
+          </div>
+    
+        </div>
+      </div>
+    </section>
+    
+
+
+
+
+
+    <!--
+      - #POPULAR
+    -->
+
+    <section class="popular" id="destination">
+      <div class="container">
+
+        <p class="section-subtitle">Uncover place</p>
+
+        <h2 class="h2 section-title">Popular destination</h2>
+
+        <p class="section-text">
+            "Explore the India's most stunning destinations—where every journey becomes a story worth telling!"
+        </p>
+
+        <ul class="popular-list">
+
+          <li>
+            <div class="popular-card">
+
+              <figure class="card-img">
+                <img decoding="async" src="{{ url_for('static', filename='Jaipur.jpeg') }}" loading="lazy">
+              </figure>
+
+              <div class="card-content">
+
+                <div class="card-rating">
+
+
+
+
+
+                </div>
+
+                <p class="card-subtitle">
+                  <a href="#">jaipur</a>
+                </p>
+
+                <h3 class="h3 card-title">
+                  <a href="#">Amer Fort</a>
+                </h3>
+
+                <p class="card-text">
+                    A timeless gem where history, culture, and beauty come together in every corner
+                </p>
+
+              </div>
+
+            </div>
+          </li>
+
+          <li>
+            <div class="popular-card">
+
+              <figure class="card-img">
+                <img decoding="async" src="{{ url_for('static', filename='queen_necklace.jpg') }}" loading="lazy">
+              </figure>
+
+              <div class="card-content">
+
+                <div class="card-rating">
+
+
+
+
+
+                </div>
+
+                <p class="card-subtitle">
+                  <a href="#">mumbai</a>
+                </p>
+
+                <h3 class="h3 card-title">
+                  <a href="#">Queen Necklace</a>
+                </h3>
+
+                <p class="card-text">
+                   beauty is within the heart or beneath the Queen Necklace
+                </p>
+
+              </div>
+
+            </div>
+          </li>
+
+          <li>
+            <div class="popular-card">
+
+              <figure class="card-img">
+                <img decoding="async" src="{{ url_for('static', filename='beach.jpg') }}" loading="lazy">
+              </figure>
+
+              <div class="card-content">
+
+                <div class="card-rating">
+
+
+
+
+
+                </div>
+
+                <p class="card-subtitle">
+                  <a href="#">agra</a>
+                </p>
+
+                <h3 class="h3 card-title">
+                  <a href="#">Taj Mahal</a>
+                </h3>
+
+                <p class="card-text">
+                    A serene blend of history, culture, and timeless beauty in every detail
+                </p>
+
+              </div>
+
+            </div>
+          </li>
+
+        </ul>
+
+        <button class="btn btn-primary">More destintion</button>
+
+      </div>
+    </section>
+
+
+
+
+
+    <!--
+      - #PACKAGE
+    -->
+
+    <section class="package" id="package">
+      <div class="container">
+
+        <p class="section-subtitle">Popular Packeges</p>
+
+        <h2 class="h2 section-title">Checkout Our Packeges</h2>
+
+        <p class="section-text">
+            "Where the waves kiss the shore and the sun meets the sea. The beach is life’s perfect escape."
+        </p>
+
+        <ul class="package-list">
+
+          <li>
+            <div class="package-card">
+
+              <figure class="card-banner">
+                <img decoding="async" src="{{ url_for('static', filename='beach.jpg') }}" alt="Experience The Great Holiday On Beach" loading="lazy">
+              </figure>
+
+              <div class="card-content">
+
+                <h3 class="h3 card-title">Experience The Great Holiday On Beach</h3>
+
+                <p class="card-text">
+                    golden sands, endless waves, and pure relaxation. A great holiday begins at the beach. 
+                    Let the ocean be your escap
+                </p>
+
+                <ul class="card-meta-list">
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">7D/6N</p>
+                    </div>
+                  </li>
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">pax: 10</p>
+                    </div>
+                  </li>
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">India</p>
+                    </div>
+                  </li>
+
+                </ul>
+
+              </div>
+
+              <div class="card-price">
+
+                <div class="wrapper">
+
+                  <p class="reviews">(25 reviews)</p>
+
+                  <div class="card-rating">
+
+
+
+
+
+                  </div>
+
+                </div>
+
+                <p class="price">
+                  ₹7500
+                  <span>/ per person</span>
+                </p>
+
+                <button class="btn btn-secondary">Book Now</button>
+
+              </div>
+
+            </div>
+          </li>
+
+          <li>
+            <div class="package-card">
+
+              <figure class="card-banner">
+                <img decoding="async" src="{{ url_for('static', filename='o.jpg') }}"alt="Summer Holiday To The Oxolotan River" loading="lazy">
+              </figure>
+
+              <div class="card-content">
+
+                <h3 class="h3 card-title">Summer Holiday To The Indus River</h3>
+
+                <p class="card-text">
+                    where nature’s beauty, flowing waters, and adventure await. Relax, explore,
+                     and make unforgettable memories
+                </p>
+
+                <ul class="card-meta-list">
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">7D/6N</p>
+                    </div>
+                  </li>
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">pax: 10</p>
+                    </div>
+                  </li>
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">India</p>
+                    </div>
+                  </li>
+
+                </ul>
+
+              </div>
+
+              <div class="card-price">
+
+                <div class="wrapper">
+
+                  <p class="reviews">(20 reviews)</p>
+
+                  <div class="card-rating">
+
+
+
+
+
+                  </div>
+
+                </div>
+
+                <p class="price">
+                  ₹5200
+                  <span>/ per person</span>
+                </p>
+
+                <button class="btn btn-secondary">Book Now</button>
+
+              </div>
+
+            </div>
+          </li>
+
+          <li>
+            <div class="package-card">
+
+              <figure class="card-banner">
+                <img decoding="async" src="{{ url_for('static', filename='santorini island.jpg') }}"alt="Santorini Island's Weekend Vacation" loading="lazy">
+              </figure>
+
+              <div class="card-content">
+
+                <h3 class="h3 card-title">Andoman and Nicobar Island's Weekend Vacation</h3>
+
+                <p class="card-text">
+                    A weekend of breathtaking views, whitewashed charm, and sunsets that steal your heart. 
+                    Escape, unwind, and embrace paradise
+                </p>
+
+                <ul class="card-meta-list">
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">7D/6N</p>
+                    </div>
+                  </li>
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text">pax: 10</p>
+                    </div>
+                  </li>
+
+                  <li class="card-meta-item">
+                    <div class="meta-box">
+
+
+                      <p class="text"></p>
+                    </div>
+                  </li>
+
+                </ul>
+
+              </div>
+
+              <div class="card-price">
+
+                <div class="wrapper">
+
+                  <p class="reviews">(40 reviews)</p>
+
+                  <div class="card-rating">
+
+
+
+
+
+                  </div>
+
+                </div>
+
+                <p class="price">
+                  ₹6600
+                  <span>/ per person</span>
+                </p>
+
+                <button class="btn btn-secondary">Book Now</button>
+
+              </div>
+
+            </div>
+          </li>
+
+        </ul>
+
+        <button class="btn btn-primary">View All Packages</button>
+
+      </div>
+    </section>
+
+
+
+
+
+    <!--
+      - #GALLERY
+    -->
+
+    <section class="gallery" id="gallery">
+      <div class="container">
+
+        <p class="section-subtitle">Photo Gallery</p>
+
+        <h2 class="h2 section-title">Photo's From Travellers</h2>
+
+        <p class="section-text">
+            "Every photo tells a story, every journey holds a memory. See the world through the eyes of our travelers"
+        </p>
+
+        <ul class="gallery-list">
+
+          <li class="gallery-item">
+            <figure class="gallery-image">
+              <img decoding="async" src="{{ url_for('static', filename='a.jpg') }}" alt="Gallery image">
+            </figure>
+          </li>
+
+          <li class="gallery-item">
+            <figure class="gallery-image">
+              <img decoding="async" src= "{{ url_for('static', filename='b.jpg') }}"" alt="Gallery image">
+            </figure>
+          </li>
+
+          <li class="gallery-item">
+            <figure class="gallery-image">
+              <img decoding="async" src="{{ url_for('static', filename='c.jpg') }}" alt="Gallery image">
+            </figure>
+          </li>
+
+          <li class="gallery-item">
+            <figure class="gallery-image">
+              <img decoding="async" src="{{ url_for('static', filename='d.jpg') }}" alt="Gallery image">
+            </figure>
+          </li>
+
+          <li class="gallery-item">
+            <figure class="gallery-image">
+              <img decoding="async" src= "{{ url_for('static', filename='e.webp') }}" alt="Gallery image">
+            </figure>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+
+
+
+
+    <!--
+      - #CTA
+    -->
+
+    <section class="cta" id="contact">
+      <div class="container">
+
+        <div class="cta-content">
+          <p class="section-subtitle">Call To Action</p>
+
+          <h2 class="h2 section-title">Ready For Unforgatable Travel. Remember Us!</h2>
+
+          <p class="section-text">
+            Ready for an unforgettable journey? Let us be your guide to amazing adventures and lasting memories
+          </p>
+        </div>
+
+        <button class="btn btn-secondary">Contact Us !</button>
+
+      </div>
+    </section>
+
+  </article>
+</main>
+
+<<section id="about" style="padding: 80px 20px; background-color: #f9f9f9; color: #000; text-align: center; min-height: 400px;">
+
+    <h2 style="color: #00bcd4; font-size: 2rem; margin-bottom: 20px;">About Us</h2>
+    <p style="max-width: 800px; margin: auto; font-size: 1.1rem; line-height: 1.6;">
+      We are three passionate and curious girls from the field of Computer Science Engineering, currently in our second year (fourth semester). This project is a part of our coursework in the specialization of Data Science.
+      <br /><br />
+      <strong>Team Members:</strong><br />
+      - Khan Hiba Akbar Ali (23DS08)<br />
+      - Sayed Fazilat (23DS16)<br />
+      - Sadaf Ansari (23DS08)
+      <br /><br />
+      Our goal is to create user-friendly tools to help people plan their travels easily and effectively. Thank you for exploring our project!
+    </p>
+    <div style="display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap;">
+      <!-- Image 1 -->
+      <div style="text-align: center; max-width: 200px;">
+        <img src= "{{ url_for('static', filename='hiba.jpg') }}" alt="Team Member 1" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #00bcd4;">
+      </div>
+    
+      <!-- Image 2 -->
+      <div style="text-align: center; max-width: 200px;">
+        <img src="{{ url_for('static', filename='fazi.jpg') }}"  alt="Team Member 2" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #00bcd4;">
+      </div>
+    
+      <!-- Image 3 -->
+      <div style="text-align: center; max-width: 200px;">
+        <img src="{{ url_for('static', filename='sadaf.jpg') }}" alt="Team Member 3" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #00bcd4;">
+
+      </div>
+    </div>
+    
+  </section>
+
+
+
+
+<!--
+  - #FOOTER
+-->
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="container">
+
+      <div class="footer-brand">
+
+        <p class="footer-text">
+            Travel opens doors to new experiences, cultures, and perspectives.
+             Every journey teaches, inspires, and creates memories that last a lifetime.
+              Explore, learn, and grow with every adventure
+        </p>
+
+      </div>
+
+      <div class="footer-contact">
+
+        <h4 class="contact-title">Contact Us</h4>
+
+        <p class="contact-text">
+          Feel free to contact and reach us !!
+        </p>
+
+        <ul>
+
+          <li class="contact-item">
+
+
+            <a href="tel:+01123456790" class="contact-link">+00 (000) 0000 00</a>
+          </li>
+
+          <li class="contact-item">
+
+
+            <a href="mailto:info.tourly.com" class="contact-link">TripTrek.Tourly.Com</a>
+          </li>
+
+          <li class="contact-item">
+
+
+            <address>400020 Marine Lines, Mumbai</address>
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="footer-form">
+
+        <p class="form-text">
+          Subscribe our newsletter for more update &amp; news !!
+        </p>
+
+
+
+
+          <button type="submit" class="btn btn-secondary">Subscribe</button>
+
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+
+      <p class="copyright">
+        &copy; 2024 <a href="">HibaDeveloper</a>. All rights reserved
+      </p>
+
+      <ul class="footer-bottom-list">
+
+        <li>
+          <a href="#" class="footer-bottom-link">Privacy Policy</a>
+        </li>
+
+        <li>
+          <a href="#" class="footer-bottom-link">Term &amp; Condition</a>
+        </li>
+
+        <li>
+          <a href="#" class="footer-bottom-link">FAQ</a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+
+</footer>
+
+
+
+
+
+<!--
+  - #GO TO TOP
+-->
+
+<a href="#top" class="go-top" data-go-top>
+
+</a>
+
+
+
+
+
+<!--
+  - custom js link
+-->
+
+
+<!--
+  - ionicon link
+-->
+<script>
+/**
+ * navbar toggle
+ */
+
+const overlay = document.querySelector("[data-overlay]");
+const navOpenBtn = document.querySelector("[data-nav-open-btn]");
+const navbar = document.querySelector("[data-navbar]");
+const navCloseBtn = document.querySelector("[data-nav-close-btn]");
+const navLinks = document.querySelectorAll("[data-nav-link]");
+const header = document.querySelector("[data-header]");
+const goTopBtn = document.querySelector("[data-go-top]");
+
+const navElemArr = [navOpenBtn, navCloseBtn, overlay];
+
+const navToggleEvent = function (elem) {
+  elem.addEventListener("click", function () {
+    navbar.classList.toggle("active");
+    overlay.classList.toggle("active");
+  });
+};
+
+navElemArr.forEach(navToggleEvent);
+
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    navbar.classList.remove("active");
+    overlay.classList.remove("active");
+  });
+});
+
+window.onscroll = function () {
+  if (window.scrollY >= 200) {
+    header.classList.add("active");
+    goTopBtn.classList.add("active");
+  } else {
+    header.classList.remove("active");
+    goTopBtn.classList.remove("active");
+  }
+};
+</script>
+
+<!-- Scroll to Top Button -->
+<button data-go-top style="position: fixed; bottom: 20px; right: 20px; display: none; background-color: #00bcd4; border: none; padding: 10px 15px; border-radius: 50%; color: white; font-size: 18px; cursor: pointer;">
+  ↑
+</button>
+
+<!-- Add this ONLY if you don't already have a header -->
+<header data-header style="display: none;"></header>
+
+<!-- Popup Modal -->
+<div id="tripModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); z-index:1000; display: flex; justify-content:center; align-items:center;">
+  <div style="background-color:#ffffff; padding:40px 30px; border-radius:12px; text-align:center; box-shadow: 0 0 20px rgba(67, 97, 238, 0.3); border-left: 5px solid #4895ef; max-width: 500px; width: 90%;">
+    <h2 style="color: #4361ee; margin-bottom: 30px; font-size: 1.5rem;">Choose How You Want to Plan</h2>
+
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+      <a href="/Automated"
+         style="background-color: #4361ee; padding: 12px 25px; border-radius: 6px; font-weight: 600; color: #ffffff; text-decoration: none; transition: background-color 0.2s; min-width: 120px;"
+         onmouseover="this.style.backgroundColor='#3f37c9'" onmouseout="this.style.backgroundColor='#4361ee'">
+        Automated
+      </a>
+      <a href="/manual"
+         style="background-color: #4361ee; padding: 12px 25px; border-radius: 6px; font-weight: 600; color: #ffffff; text-decoration: none; transition: background-color 0.2s; min-width: 120px;"
+         onmouseover="this.style.backgroundColor='#3f37c9'" onmouseout="this.style.backgroundColor='#4361ee'">
+        Manual
+      </a>
+    </div>
+
+    <button onclick="closeModal()" 
+            style="margin-top: 30px; background: none; border: 1px solid #4361ee; color: #4361ee; padding: 8px 25px; border-radius: 5px; cursor: pointer; transition: all 0.2s; font-weight: 500;"
+            onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
+      Cancel
+    </button>
+  </div>
+</div>
+  <script>
+    function openModal() {
+      document.getElementById('tripModal').style.display = 'flex';
+    }
+  
+    function closeModal() {
+      document.getElementById('tripModal').style.display = 'none';
+    }
+  </script>
+<!-- Mini Login Popup Modal -->
+<div id="loginPrompt" style="display:none; position:fixed; top:50%; left:50%; transform: translate(-50%, -50%); background-color: #ffffff; padding: 30px 25px; border-radius: 18px; box-shadow: 0 0 20px rgba(67, 97, 238, 0.3); z-index:9999; font-family: 'Poppins', sans-serif; width: 90%; max-width: 400px; text-align: center; border-left: 5px solid #4895ef;">
+
+  <h2 style="color: #4361ee; margin-bottom: 15px;">Welcome to TripTrek</h2>
+  <p style="color: #2d3748; font-size: 0.95rem; margin-bottom: 20px;">
+    Please log in to continue exploring your travel plans.
+  </p>
+
+  <form action="/login" method="post">
+
+    <input type="email" name="email" placeholder="Email" required
+      style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #e2e8f0; border-radius: 6px; background-color: #f8f9fa; color: #2d3748; font-size: 0.95rem;">
+
+    <input type="password" name="password" placeholder="Password" required
+      style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 6px; background-color: #f8f9fa; color: #2d3748; font-size: 0.95rem;">
+
+    <button type="submit"
+      style="width: 100%; background-color: #4361ee; color: #ffffff; padding: 10px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s;">
+      Login
+    </button>
+  </form>
+
+  <button onclick="closeLoginPrompt()"
+    style="margin-top: 12px; background: none; border: 1px solid #4361ee; color: #4361ee; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+    Cancel
+  </button>
+  <p style="margin-top: 20px; font-size: 0.9rem; color: #718096;">
+    Don't have an account?
+    <a href="#" style="color: #3f37c9; text-decoration: underline;">Sign up</a>
+  </p>
+  
+</div>
+  <script>
+    // Show popup after 15 seconds
+    setTimeout(() => {
+      document.getElementById("loginPrompt").style.display = "block";
+    }, 5000); // 15 seconds
+  
+    // Function to close the popup
+    function closeLoginPrompt() {
+      document.getElementById("loginPrompt").style.display = "none";
+    }
+
+  </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.querySelector('#loginPrompt form');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(loginForm);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        device_id: 'web_browser' // or generate a unique device ID
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Login successful
+                    alert(result.message);
+                    closeLoginPrompt();
+                    
+                    // Store user data if needed
+                    localStorage.setItem('user', JSON.stringify({
+                        user_id: result.user_id,
+                        email: email,
+                        past_trips: result.past_trips
+                    }));
+                    
+                    // Redirect or update UI
+                    window.location.href = '/dashboard'; // or wherever you want to redirect
+                } else {
+                    // Show error message
+                    alert(result.error || 'Login failed');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('An error occurred during login');
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
